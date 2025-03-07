@@ -1,5 +1,8 @@
+import { checkpointsData } from "../../lib/checkpoints.js";
 import { renderNavigationComponent } from "../navigation/navigationComponent.js";
 import { renderPathComponent } from "../path/path.js";
+
+let currentStep = 0;
 
 export function renderMainMap(containerId) {
   const container = document.getElementById(containerId);
@@ -128,4 +131,49 @@ export function renderMainMap(containerId) {
 
   renderPathComponent("path-container");
   renderNavigationComponent("navigation-container");
+
+  function moveStudentWoman() {
+    if (currentStep < checkpointsData.length) {
+      const { left, top } = checkpointsData[currentStep];
+      const targetLeft = parseInt(left);
+      const targetTop = parseInt(top) - parseInt(studentWoman.style.height);
+  
+      const startLeft = parseInt(studentWoman.style.left);
+      const startTop = parseInt(studentWoman.style.top);
+  
+      const steps = 60; 
+      let stepCount = 0;
+
+      function animate() {
+        stepCount++;
+        const progress = stepCount / steps;
+  
+
+        const currentLeft = startLeft + (targetLeft - startLeft) * progress;
+        const currentTop = startTop + (targetTop - startTop) * progress;
+  
+        studentWoman.style.left = `${currentLeft}px`;
+        studentWoman.style.top = `${currentTop}px`;
+  
+
+        if (stepCount < steps) {
+          requestAnimationFrame(animate);
+        } else {
+          currentStep++; 
+          console.log("Кнопка нажата!");
+        }
+      }
+
+      requestAnimationFrame(animate);
+    } else {
+      console.log("Достигнута конечная точка");
+    }
+  }
+
+  const universityButton = document.getElementById("university-btn");
+  if (universityButton) {
+    universityButton.addEventListener("click", function () {
+      moveStudentWoman();
+    });
+  }
 }

@@ -28,6 +28,7 @@ export function renderNavigationComponent(containerId) {
   chatButton.style.height = "63px";
 
   const universityButton = document.createElement("div");
+  universityButton.id = 'university-btn'
   universityButton.style.backgroundImage = `url(../../assets/images/buttons/universityBtn.png)`;
   universityButton.style.width = "205px";
   universityButton.style.height = "65px";
