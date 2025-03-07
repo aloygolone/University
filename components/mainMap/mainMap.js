@@ -1,6 +1,7 @@
 import { checkpointsData } from "../../lib/checkpoints.js";
 import { renderNavigationComponent } from "../navigation/navigationComponent.js";
 import { renderPathComponent } from "../path/path.js";
+import { renderLeaderboardComponent } from "../leaderboardModal/leaderboardModal.js";
 
 let currentStep = 0;
 
@@ -132,34 +133,59 @@ export function renderMainMap(containerId) {
   renderPathComponent("path-container");
   renderNavigationComponent("navigation-container");
 
+  let leaderboardContainer = document.getElementById("leaderboard-container");
+  if (!leaderboardContainer) {
+    leaderboardContainer = document.createElement("div");
+    leaderboardContainer.id = "leaderboard-container";
+    leaderboardContainer.style.position = "absolute";
+    leaderboardContainer.style.top = "0";
+    leaderboardContainer.style.left = "0";
+    leaderboardContainer.style.width = "100vw";
+    leaderboardContainer.style.height = "100vh";
+    leaderboardContainer.style.zIndex = 200;
+    leaderboardContainer.style.display = "none";
+    container.appendChild(leaderboardContainer);
+  }
+
+  const leaderboardButton = document.getElementById("leaderboard-btn");
+  if (leaderboardButton) {
+    leaderboardButton.addEventListener("click", function () {
+    
+      if (leaderboardContainer.style.display === "flex") {
+        leaderboardContainer.style.display = "none"; 
+      } else {
+        leaderboardContainer.style.display = "flex"; 
+        renderLeaderboardComponent("leaderboard-container"); 
+      }
+    });
+  }
+
   function moveStudentWoman() {
     if (currentStep < checkpointsData.length) {
       const { left, top } = checkpointsData[currentStep];
       const targetLeft = parseInt(left);
       const targetTop = parseInt(top) - parseInt(studentWoman.style.height);
-  
+
       const startLeft = parseInt(studentWoman.style.left);
       const startTop = parseInt(studentWoman.style.top);
-  
-      const steps = 60; 
+
+      const steps = 60;
       let stepCount = 0;
 
       function animate() {
         stepCount++;
         const progress = stepCount / steps;
-  
 
         const currentLeft = startLeft + (targetLeft - startLeft) * progress;
         const currentTop = startTop + (targetTop - startTop) * progress;
-  
+
         studentWoman.style.left = `${currentLeft}px`;
         studentWoman.style.top = `${currentTop}px`;
-  
 
         if (stepCount < steps) {
           requestAnimationFrame(animate);
         } else {
-          currentStep++; 
+          currentStep++;
           console.log("Кнопка нажата!");
         }
       }

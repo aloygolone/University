@@ -39,6 +39,7 @@ export function renderNavigationComponent(containerId) {
   mailButton.style.height = "64px";
 
   const leaderboardButton = document.createElement("div");
+  leaderboardButton.id = 'leaderboard-btn'
   leaderboardButton.style.backgroundImage = `url(../../assets/images/buttons/leaderboardBtn.png)`;
   leaderboardButton.style.width = "66px";
   leaderboardButton.style.height = "61px";
